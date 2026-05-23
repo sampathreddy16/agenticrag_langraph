@@ -37,6 +37,10 @@ fi
 echo "Initializing Airflow database..."
 airflow db migrate
 
+# Sync FAB permissions FIRST so roles (Admin, Viewer, etc.) exist before user create.
+echo "Syncing Airflow FAB permissions..."
+airflow sync-perm
+
 # Create admin user (idempotent — skips silently if already exists)
 echo "Creating admin user..."
 airflow users create \
